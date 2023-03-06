@@ -1,6 +1,6 @@
 import React from "react";
 
-function GuessInput({ handleAddGuess }) {
+function GuessInput({ gameStatus, handleAddGuess }) {
   const [state, setState] = React.useState({ value: "" });
 
   function handleSubmit(e) {
@@ -21,6 +21,7 @@ function GuessInput({ handleAddGuess }) {
         required
         minLength={5}
         maxLength={5}
+        disabled={gameStatus !== "running"}
         pattern="[a-zA-Z]{5}"
         onChange={(e) => setState({ value: e.target.value.toUpperCase() })}
       />
