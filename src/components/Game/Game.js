@@ -6,13 +6,14 @@ import GuessInput from "../GuessInput/GuessInput";
 import GuessResults from "../GuessResults/GuessResults";
 import { WonBanner, LostBanner } from "../Banner/Banner";
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
-
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
+import Keyboard from "../Keyboard/Keyboard";
+import { checkGuess } from "../../game-helpers";
 
 function Game() {
+  const [answer, setAnswer] = React.useState(() => sample(WORDS));
+  // To make debugging easier, we'll log the solution in the console.
+  console.info({ answer });
+
   const [gameStatus, setGameStatus] = React.useState("running");
   const [guesses, setGuesses] = React.useState([]);
 
@@ -20,23 +21,40 @@ function Game() {
     const nextGuesses = [...guesses, tempGuess];
     setGuesses(nextGuesses);
 
-    if (tempGuess.value === answer) {
+    if (tempGuess === answer) {
       setGameStatus("won");
-    } else if (guesses.length >= NUM_OF_GUESSES_ALLOWED) {
+    } else if (nextGuesses.length >= NUM_OF_GUESSES_ALLOWED) {
       setGameStatus("lost");
     }
   }
 
+  function handleReset() {
+    setAnswer(sample(WORDS));
+    setGuesses([]);
+    setGameStatus("running");
+  }
+
+  const validatedGuesses = guesses.map((guess) => checkGuess(guess, answer));
+
   return (
     <>
-      <GuessResults guesses={guesses} answer={answer} />
+      <GuessResults validatedGuesses={validatedGuesses} answer={answer} />
       <GuessInput gameStatus={gameStatus} handleAddGuess={handleAddGuess} />
       {gameStatus === "won" && (
-        <WonBanner gameStatus={gameStatus} numberOfGuesses={guesses.length} />
+        <WonBanner
+          gameStatus={gameStatus}
+          numberOfGuesses={guesses.length}
+          handleReset={handleReset}
+        />
       )}
       {gameStatus === "lost" && (
-        <LostBanner gameStatus={gameStatus} answer={answer} />
+        <LostBanner
+          gameStatus={gameStatus}
+          answer={answer}
+          handleReset={handleReset}
+        />
       )}
+      <Keyboard validatedGuesses={validatedGuesses} />
     </>
   );
 }

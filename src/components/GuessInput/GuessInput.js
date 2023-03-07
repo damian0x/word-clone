@@ -1,13 +1,13 @@
 import React from "react";
 
 function GuessInput({ gameStatus, handleAddGuess }) {
-  const [state, setState] = React.useState({ value: "" });
+  const [state, setState] = React.useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    handleAddGuess({ id: crypto.randomUUID(), ...state });
-    setState({ value: "" });
+    handleAddGuess(state);
+    setState("");
   }
 
   return (
@@ -17,13 +17,13 @@ function GuessInput({ gameStatus, handleAddGuess }) {
         id="guess-input"
         title="5 letter word"
         type="text"
-        value={state.value}
+        value={state}
         required
         minLength={5}
         maxLength={5}
         disabled={gameStatus !== "running"}
         pattern="[a-zA-Z]{5}"
-        onChange={(e) => setState({ value: e.target.value.toUpperCase() })}
+        onChange={(e) => setState(e.target.value.toUpperCase())}
       />
     </form>
   );

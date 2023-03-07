@@ -1,14 +1,30 @@
 import React from "react";
 
-function Banner({ gameStatus, children }) {
+function Banner({ gameStatus, action, actionText, children }) {
   const mood =
     gameStatus === "won" ? "happy" : gameStatus === "lost" ? "sad" : "";
-  return <div className={`banner ${mood}`}>{children}</div>;
+  return (
+    <div className={`banner ${mood}`}>
+      {children}{" "}
+      {action && (
+        <button
+          onClick={action}
+          style={{ border: "2px solid white", padding: 4 }}
+        >
+          {actionText}
+        </button>
+      )}
+    </div>
+  );
 }
 
-export function LostBanner({ gameStatus, answer }) {
+export function LostBanner({ gameStatus, answer, handleReset }) {
   return (
-    <Banner gameStatus={gameStatus}>
+    <Banner
+      gameStatus={gameStatus}
+      action={handleReset}
+      actionText="Restart game"
+    >
       <p>
         Sorry, the correct answer is <strong>{answer}</strong>.
       </p>
@@ -16,11 +32,15 @@ export function LostBanner({ gameStatus, answer }) {
   );
 }
 
-export function WonBanner({ gameStatus, numberOfGuesses }) {
+export function WonBanner({ gameStatus, numberOfGuesses, handleReset }) {
   return (
-    <Banner gameStatus={gameStatus}>
+    <Banner
+      gameStatus={gameStatus}
+      action={handleReset}
+      actionText="Restart game"
+    >
       <p>
-        <strong>Congratulations!</strong> Got it in
+        <strong>Congratulations!</strong> Got it in{" "}
         <strong>{numberOfGuesses} guesses</strong>.
       </p>
     </Banner>

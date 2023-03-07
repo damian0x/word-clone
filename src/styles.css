@@ -219,6 +219,44 @@ h1 {
   margin-bottom: 0.5em;
 }
 
+.keyboard {
+  width: 100%;
+}
+
+.keyboard-row {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.keyboard-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  border-radius: 5px;
+  padding: 10px;
+  height: 35px;
+  background-color: lightgray;
+}
+
+.keyboard-button.correct {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+.keyboard-button.incorrect {
+  background: var(--color-gray-300);
+  border-color: var(--color-gray-300);
+  color: white;
+}
+.keyboard-button.misplaced {
+  background: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
+}
+
 /*
   Keyframe animations
 */
